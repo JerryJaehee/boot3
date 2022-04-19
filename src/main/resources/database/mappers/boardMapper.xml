@@ -45,7 +45,7 @@
 		ORDER BY NUM DESC LIMIT #{startRow}, #{perPage}
 	</select>
 	
-	 <select id="total" resultType="Long" parameterType="Pager">
+	 <select id="getTotalCount" resultType="Long" parameterType="Pager">
  		SELECT COUNT(NUM) FROM BOARD
  		WHERE
  			NUM>0 
