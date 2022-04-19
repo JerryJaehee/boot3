@@ -45,6 +45,25 @@
 		ORDER BY NUM DESC LIMIT #{startRow}, #{perPage}
 	</select>
 	
+	 <select id="total" resultType="Long" parameterType="Pager">
+ 		SELECT COUNT(NUM) FROM BOARD
+ 		WHERE
+ 			NUM>0 
+		    and 	       	
+		     <choose>
+		     	<when test="kind=='col1'">
+		     		TITLE
+		     	</when>
+		     	<when test="kind =='col2'">
+		     		CONTENTS
+		     	</when>
+		     	<otherwise>
+		     		WRITER
+		     	</otherwise>
+		     </choose>	
+        	like concat('%', #{search},'%')
+ 	</select>
+	
 	<insert id="setAdd" parameterType="BoardVO">
 		INSERT INTO BOARD(NUM, TITLE, WRITER, CONTENTS, HIT, REGDATE, `REF`, STEP,`DEPTH`, CATEGORY)
 		VALUES (NULL, #{title}, #{writer}, #{contents}, 0, now(), 0,0,0, 1)

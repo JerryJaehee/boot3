@@ -14,6 +14,7 @@ public class BoardService {
 	
 	public List<BoardVO> getList(Pager pager) throws Exception {
 		pager.makeRow();
+		pager.makeNum(boardMapper.total(pager));
 		
 		return boardMapper.getList(pager);
 	}
