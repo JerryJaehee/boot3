@@ -3,6 +3,7 @@ package com.iu.boot3.board;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.iu.boot3.util.Pager;
 
@@ -19,7 +20,7 @@ public interface BoardMapper {
 	public BoardFilesVO getFileDetail(BoardFilesVO boardFilesVO) throws Exception;
 	
 	//list : getFileList
-	public List<BoardFilesVO> getFileList() throws Exception;
+	public List<BoardFilesVO> getFileList(BoardVO boardVO) throws Exception;
 	
 	//detail
 	public BoardVO getDetail(BoardVO boardVO) throws Exception;

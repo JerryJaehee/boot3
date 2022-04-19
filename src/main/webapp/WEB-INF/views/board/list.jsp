@@ -59,7 +59,7 @@
 					<c:forEach items="${requestScope.list}" var="vo">
 						<tr>
 							<th scope="row">${vo.num}</th>
-							<td>${vo.title}</td>
+							<td><a href="./detail?num=${vo.num}" class="link-info">${vo.title}</a></td>
 							<td>${vo.writer}</td>
 							<td>${vo.hit}</td>
 							<td>${vo.regDate}</td>
@@ -99,7 +99,7 @@
 		</div>
 
 
-
+</div>
 
 		<script
 			src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

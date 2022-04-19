@@ -17,17 +17,17 @@ class BoardMapperTest {
 	@Autowired
 	private BoardMapper boardMapper;
 	
-	//@Test
+	@Test
 	void test() throws Exception{
 		BoardVO boardVO = new BoardVO();
-		boardVO.setNum(3L);
+		boardVO.setNum(109L);
 		boardVO = boardMapper.getDetail(boardVO);
 		
 		System.out.println(boardVO.toString());
 		assertNotNull(boardVO);
 	}
 
-	@Test
+	//@Test
 	public void getListTest() throws Exception {
 		Pager pager = new Pager();
 		pager.makeRow();
@@ -70,7 +70,7 @@ class BoardMapperTest {
 		boardVO.setContents("addContents"+i);
 		boardVO.setWriter("addWriter"+i);
 		
-		int result = boardMapper.setAdd(boardVO);
+	//	int result = boardMapper.setAdd(boardVO);
 		}
 		System.out.println("finish");
 		//assertEquals(1, result);
@@ -98,11 +98,11 @@ class BoardMapperTest {
 		assertNotNull(boardFilesVO);
 	}
 	
-	//@Test
-	public void getFileList() throws Exception {
-		List<BoardFilesVO> ar = boardMapper.getFileList();
-		assertNotEquals(0, ar.size());
-	}
+//	//@Test
+//	public void getFileList() throws Exception {
+//		List<BoardFilesVO> ar = boardMapper.getFileList();
+//		assertNotEquals(0, ar.size());
+//	}
 	
 	//@Test
 	public void setFileDelete() throws Exception {
@@ -112,4 +112,6 @@ class BoardMapperTest {
 		int result = boardMapper.setFileDelete(boardFilesVO);
 		assertEquals(1, result);
 	}
+	
+
 }
