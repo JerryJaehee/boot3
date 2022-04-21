@@ -16,6 +16,10 @@ public class BoardService {
 	@Autowired
 	private FileManager fileManager;
 	
+	public BoardFilesVO getFileDetail(BoardFilesVO boardFilesVO) throws Exception {
+		return boardMapper.getFileDetail(boardFilesVO);
+	}
+	
 	public BoardVO getDetail(BoardVO boardVO) throws Exception {
 		return boardMapper.getDetail(boardVO);
 	}
