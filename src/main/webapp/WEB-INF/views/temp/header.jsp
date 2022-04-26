@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-  <header class="container-fluid">
-	 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<header class="container-fluid">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	  <div class="container-fluid">
 	    <a class="navbar-brand" href="#">Navbar</a>
 	    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -13,7 +14,10 @@
 	          <a class="nav-link active" aria-current="page" href="/">Home</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link active" href="/notice/list">Notice</a>
+	          <a class="nav-link active" href="/board/list">Board</a>
+	        </li>
+	        <li class="nav-item">
+	          <a class="nav-link active" href="/product/list">product</a>
 	        </li>
 	        <li class="nav-item dropdown">
 	          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,10 +34,36 @@
 	          <a class="nav-link disabled">Disabled</a>
 	        </li>
 	      </ul>
-	      <form class="d-flex">
-	        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-	        <button class="btn btn-outline-success" type="submit">Search</button>
-	      </form>
+	      
+	      <ul class="navbar-nav mb-2 mb-lg-0">
+	      	<c:choose>
+	      		<c:when test="${not empty member}">
+				    <li class="nav-item">
+			          <a class="nav-link active" aria-current="page" href="/member/mypage">
+			          Mypage <i class="bi bi-person-circle"></i>
+			          </a>
+			        </li>
+			        <li class="nav-item">
+			          <a class="nav-link active" href="/member/logout">
+			          LogOut <i class="bi bi-unlock"></i>
+			          </a>
+			        </li>      		
+	      		</c:when>
+	      		<c:otherwise>
+			        <li class="nav-item">
+			          <a class="nav-link active" aria-current="page" href="/member/join">
+			          Join <i class="bi bi-person-plus-fill"></i>
+			          </a>
+			        </li>
+			        <li class="nav-item">
+			          <a class="nav-link active" href="/member/login">
+			          Login <i class="bi bi-lock-fill"></i>
+			          </a>
+			        </li>	  
+		        </c:otherwise>
+	        </c:choose>    
+	      </ul>
+	      
 	    </div>
 	  </div>
 	</nav>

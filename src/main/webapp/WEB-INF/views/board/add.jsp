@@ -8,8 +8,12 @@
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
 
- <!-- Bootstrap CSS -->
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+<c:import url="../temp/header_css.jsp"></c:import>
+<c:import url="../temp/header-script.jsp"></c:import>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -42,24 +46,48 @@
 			  
 			  <div class="mb-3 row">
 			  <label for="exampleFormControlTextarea1" class="col-form-label col-sm-2">Contents</label>
-			  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="contents"></textarea>
+			  <textarea class="form-control" id="summernote" rows="3" name="contents"></textarea>
+			</div>
+
+			<button type="button" class="btn btn-outline-danger d-block my-4" id="fileAdd">FileADD</button>
+			
+			<div id="fileResult">
+				
 			</div>
 			
-			<div class="row mb-3">
-  <label for="formFile" class="form-label">File</label>
-  <input class="form-control" type="file" id="formFile" name="files">
-</div>
-
-<div class="row mb-3">
-  <label for="formFile" class="form-label">File</label>
-  <input class="form-control" type="file" id="formFile" name="files">
-</div>
 			<button type="submit" class="btn btn-primary">ADD</button>
 			</form>
 		
 		</div>
 	</div>
 
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+ <script type="text/javascript">
+ 	$("#summernote").summernote({
+ 		height : 400
+ 	});
+ 
+ 	let count = 0;
+ 
+ 	$("#fileAdd").click(function() {
+ 		if(count>4) {
+ 			alert('최대 5개만 가능합니다.');
+ 			return ;
+ 		}
+ 		let result = '<div class="input-group">';
+ 		result = result + ' <input type="file" name="files" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">';
+ 		result = result + '  <button class="btn btn-outline-secondary del" type="button" id="inputGroupFileAddon04">X</button>'
+ 		result = result + '</div>';
+ 		
+ 		$("#fileResult").append(result);
+ 		count++;
+ 	});
+ 	
+ 	$("#fileResult").on("click", ".del", function() {
+ 		$(this).parent().remove();
+ 		count--;
+ 	})
+ 	
+ </script>
+ 
 </body>
 </html>

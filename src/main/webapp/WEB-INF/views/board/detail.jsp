@@ -18,31 +18,44 @@
 </head>
 <body>
 	<c:import url="../temp/header.jsp"></c:import>
-	<div class="container mt-4">
+<div class="container">
+	<h1>Detail Page</h1>
 	
-		
-	<div class="row mt-4">
-		<div class="alert alert-primary" role="alert">
-			<h4 class="text-center" style="text-transform:uppercase;">${board} detail Page</h4>
+	<div class="row">
+		<div class="card">
+			<ul class="list-group list-group-flush">
+			   	<li class="list-group-item">${vo.title}</li>
+		   		<li class="list-group-item">${vo.writer} </li>
+			</ul>
+		  
+			<div class="card-body">
+				${vo.contents}
+	    	</div>
+	    	
+	    	<hr class="my-6">
+	    		<h6>첨부파일</h6>
+	    	
+				<ul class="list-group list-group-flush">
+				   	<c:forEach items="${vo.filesVOs}" var="f">
+				   	<li class="list-group-item">
+				   		<a href="./fileDown?fileNum=${f.fileNum}">${f.oriName}</a>
+				   	</li>
+				   	</c:forEach>
+				</ul>
+
+    	 
+		</div>
+	
+	</div>
+	
+</div>
+	<div class="container my-4">
+		<div class="col-2 d-flex">
+			<a href="update?num=${vo.num}" role="button" class="btn btn-success mx-1">Update</a>
+			<a href="delete?num=${vo.num}" role="button" class="btn btn-danger mx-1">Delete</a>
 		</div>
 	</div>
-	<div class="card row mt-4" style="width: 18rem;">
-		<ul class="list-group list-group-flush">
-			<li class="list-group-item">${vo.writer}</li>
-			<li class="list-group-item">${vo.title}</li>
-			<li class="list-group-item">${vo.contents}</li>
-			<li class="list-group-item">
-				<c:forEach items="${vo.filesVOs}" var="f">
-					<a href="./fileDown?fileNum=${f.fileNum}">${f.oriName}</a>
-				</c:forEach>
-			</li>
-		</ul>
-	</div>
-		<div class="mt-4">
-			<a role="button" href="./update?num=${vo.num}" class="btn btn-success">UPDATE</a>
-			<a role="button" href="./delete?num=${vo.num}" class="btn btn-danger">DELETE</a>
-		</div>
-	</div>
+
 	
 	
 	<script

@@ -43,7 +43,73 @@
 		</div>
  </div>
 	
+<div class="container">
+	<input type="text" id="v1">
+	
+	<input type="checkbox" class="num" name="num" value="a">
+	<input type="checkbox" class="num" name="num" value="b">
+	<input type="checkbox" class="num" name="num" value="c">
+	<input type="checkbox" class="num" name="num" value="d">
+	
+	<button id="btn1" type="button">GET</button>
+	<button id="btn2" type="button">POST</button>
+	<button id="btn3" type="button">AJAX</button>
+</div>
+
 
 <c:import url="./temp/header-script.jsp"></c:import> 
+<script type="text/javascript">
+	$("#btn1").click(function() {
+		let v = $("#v1").val();
+		console.log(v);
+		$.get("./getTest?msg="+v, function(data) {
+			console.log("응답 완료");
+			console.log(data.trim());
+		});
+	});
+	
+	//btn2를 클릭하면 click하면 v1의 입력된 값을 /postTest 요청시 파라미터 전송
+	//응답으로 getResult.jsp 를 받기
+	$("#btn2").click(function() {
+		let v = $("#v1").val();
+		$.post("./postTest", {msg:v}, function(data) {
+			console.log("응답 완료");
+			console.log(data.trim());
+		})
+	
+	});
+	
+		
+	$("#btn3").click(function() {
+		let ar = [1,2,3];
+		let v = $("#v1").val();
+		let nums = [];
+		
+		$(".num").each(function(idx, item) {
+			if($(item).prop("checked")) {
+				console.log($(item).val());
+				nums.push($(item).val());
+			}
+		});
+		
+		$.ajax({
+			type : "POST",
+			url : "./arrayTest",
+			traditional:true,
+			data : {
+				msg : v,
+				numbers : ar,
+				nums : nums
+			},
+			success:function(d) {
+				console.log(d.trim());
+			}, 
+			error:function() {
+				alert("에러 발생");
+			}
+		});
+	
+	});
+</script>
 </body>
 </html>

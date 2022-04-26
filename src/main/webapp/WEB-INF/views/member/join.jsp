@@ -64,10 +64,48 @@
 		  </div>
 		   <button type="submit" class="btn btn-primary">JOIN</button>
 	</form>
+	
+	<div class="row">
+		<div class="form-check">
+		  <input class="form-check-input" type="checkbox" value="" id="all">
+		  <label class="form-check-label" for="all">
+		    checkbox-All
+		  </label>
+		</div>
+		<div class="form-check">
+		  <input class="form-check-input ch" type="checkbox" value="" id="check1">
+		  <label class="form-check-label" for="check1">
+		    checkbox2
+		  </label>
+		</div>
+		<div class="form-check">
+		  <input class="form-check-input ch" type="checkbox" value="" id="check2">
+		  <label class="form-check-label" for="check2">
+		    checkbox3
+		  </label>
+		</div>
+		<div class="form-check">
+		  <input class="form-check-input ch" type="checkbox" value="" id="check3">
+		  <label class="form-check-label" for="check3">
+		  	checkbox4
+		  </label>
+		</div>
+	</div>
 </div>
-		<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"></script>
+		<c:import url="../temp/header-script.jsp"></c:import> 
+		<script type="text/javascript">
+			$("#all").click(function() {
+				$(".ch").prop("checked", $("#all").prop("checked"));
+			});
+			$(".ch").on("click", function() {
+				let check = true;
+				$(".ch").each(function(idx, item) {
+					if(!$(item).prop("checked")) {
+						check = false;
+					}
+				});
+				$("#all").prop("checked", check);
+			});
+		</script>
 </body>
 </html>
