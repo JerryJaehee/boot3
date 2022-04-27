@@ -18,8 +18,6 @@
 </head>
 <body>
 <c:import url="../temp/header.jsp"></c:import>
-	<h1>Add page</h1>
-	
 	<div class="container mt-4">
 	
 		<div class="row mt-4">
@@ -33,14 +31,14 @@
 			  <div class="mb-3 row">
 			    <label for="staticText" class="col-sm-2 col-form-label">Writer</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="staticText" name="writer">
+			      <input type="text" class="form-control" id="writer" name="writer">
 			    </div>
 			  </div>
 			  
 			  <div class="mb-3 row">
 			    <label for="staticText" class="col-sm-2 col-form-label">Title</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="staticText" name="title">
+			      <input type="text" class="form-control" id="title" name="title">
 			    </div>
 			  </div>
 			  
@@ -63,7 +61,45 @@
 
  <script type="text/javascript">
  	$("#summernote").summernote({
- 		height : 400
+ 		height : 400,
+ 		placeholder: '내용을 입력하세요',
+ 		callbacks: {
+ 			onImageUpload:function(files) {
+				//files 업로드한 이미지 파일 객체
+				let formData = new FormData();
+				formData.append("file", files[0]);
+				
+				// /board/summerFileUpload
+				$.ajax({
+					type:"POST",
+					url:"./summerFileUpload",
+					processData:false,
+					contentType:false,
+					data:formData,
+					success:function(data) {
+						$("#summernote").summernote('editor.insertImage', data.trim());					
+					},
+					error:function() {
+						alert("에러 발생");
+					}
+				});
+				
+ 			}, //onImageUpload 끝
+ 			onMediaDelete:function(files) {
+ 				let fileName = $(files[0]).attr("src");
+ 				console.log("fileName : "+fileName);
+ 				$.ajax({
+ 					type:"GET",
+ 					url:"./summerFileDelete",
+ 					data: {
+ 						fileName:fileName
+ 					},
+ 					success:function(data) {
+ 						console.log(data.trim());
+ 					}
+ 				});
+ 			}// onMediaDelete 끄읕
+ 		}
  	});
  
  	let count = 0;

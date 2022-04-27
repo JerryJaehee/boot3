@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,81 +19,105 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/member/*")
 public class MemberController {
 	
+
 	@Autowired
 	private MemberService memberService;
+
+	@ModelAttribute("board")
+	public String getBoard() {
+		return "member";
+	}
 	
-	@GetMapping("join")
-	public ModelAndView join() throws Exception {
+	@PostMapping("update")
+	public ModelAndView setUpdate(MemberVO memberVO, HttpSession session)throws Exception{
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("member/join");
-		
+		MemberVO vo = (MemberVO)session.getAttribute("member");
+		memberVO.setId(vo.getId());
+		int result = memberService.setUpdate(memberVO);
+		mv.setViewName("redirect:./mypage");
 		return mv;
 	}
 	
-	@PostMapping("join")
-	public ModelAndView join(MemberVO memberVO, MultipartFile proFile) throws Exception {
+	
+	@GetMapping("update")
+	public ModelAndView setUpdate(HttpSession session)throws Exception{
 		ModelAndView mv = new ModelAndView();
-		int result = memberService.join(memberVO, proFile);
+		MemberVO memberVO =(MemberVO)session.getAttribute("member");
+		memberVO = memberService.getDetail(memberVO);
+		
+		mv.addObject("vo", memberVO);
+		mv.setViewName("member/update");
+		return mv;
+	}
+	
+	@GetMapping("mypage")
+	public ModelAndView getMypage(HttpSession session)throws Exception{
+		ModelAndView mv = new ModelAndView();
+		MemberVO memberVO =(MemberVO)session.getAttribute("member");
+		memberVO = memberService.getDetail(memberVO);
+		
+		mv.addObject("vo", memberVO);
+		mv.setViewName("member/mypage");
+		return mv;
+	}
+	
+	@GetMapping("logout")
+	public ModelAndView getLogout(HttpSession session)throws Exception{
+		session.invalidate();
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:../");
 		return mv;
 	}
 	
-	@GetMapping("login")
-	public ModelAndView login(@CookieValue(value="remember",defaultValue ="", required = false)String rememberId) throws Exception {
+	@PostMapping("login")
+	public ModelAndView getLogin(MemberVO memberVO, HttpSession session)throws Exception{
 		ModelAndView mv = new ModelAndView();
+		memberVO = memberService.getLogin(memberVO);
+		mv.setViewName("member/login");
 		
+		if(memberVO!=null) {
+			session.setAttribute("member", memberVO);
+			mv.setViewName("redirect:../");
+		}
+		
+		return mv;
+	}
+	
+	@GetMapping("login")
+	public ModelAndView getLogin()throws Exception{
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("member/login");
 		return mv;
 	}
 	
-	@PostMapping("login")
-	public String login(MemberVO memberVO, HttpSession session,String remember, Model model, HttpServletResponse response) throws Exception {
-		System.out.println("Remember : "+remember);
-		System.out.println("id :"+memberVO.getId());
-		System.out.println("pw : "+memberVO.getPw());
+	@GetMapping("delete")
+	public ModelAndView setDelete(HttpSession session)throws Exception{
+		ModelAndView mv = new ModelAndView();
+		MemberVO memberVO =(MemberVO)session.getAttribute("member");
+		int result = memberService.setDelete(memberVO);
 		
-		if(remember != null && remember.equals("1")) {
-			//cookie 생성
-			Cookie cookie = new Cookie("remember", memberVO.getId());
-			//cookie.setPath("/");
-			cookie.setMaxAge(-1);
-			//응답
-			response.addCookie(cookie);
-		}else {
-			Cookie cookie = new Cookie("remember", "");
-			cookie.setMaxAge(0);
-			response.addCookie(cookie);
-		}
-		memberVO = memberService.login(memberVO);
+		session.invalidate();
 		
-//		String path="redirect:./login";
-//		
-//		if(memberDTO != null) {
-//			session.setAttribute("member", memberDTO);
-//			path = "redirect:../";
-//		}
-		
-		String message="Login Fail";
-		String p="./login";
-		
-		if(memberVO != null) {
-			session.setAttribute("member", memberVO);
-			message="Login Success";
-			p="../";
-		}
-		model.addAttribute("message", message);
-		model.addAttribute("path", p);
-		String path="common/result";
-		return path;
+		mv.setViewName("redirect:../");
+		return mv;
 	}
 	
-	@GetMapping("mypage")
-	public ModelAndView mypage(HttpSession httpSession) throws Exception {
+	@PostMapping("add")
+	public ModelAndView setAdd(MemberVO memberVO, MultipartFile files)throws Exception{
 		ModelAndView mv = new ModelAndView();
-		MemberVO memberVO = (MemberVO)httpSession.getAttribute("member");
-		memberService.mypage(memberVO);
-		mv.addObject("memberVO",memberVO);
-		mv.setViewName("member/mypage");
+		int result = memberService.setAdd(memberVO, files);
+		
+		
+		mv.setViewName("redirect:../");
+		return mv;
+	}
+ 
+	
+	
+	@GetMapping("add")
+	public ModelAndView setAdd()throws Exception{
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("member/add");
 		return mv;
 	}
 }

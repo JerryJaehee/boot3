@@ -5,16 +5,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Mapper
 public interface MemberMapper {
-	public int addFile(MemberFilesVO memberFilesVO) throws Exception;
+	//파일 detail
+	public MemberFilesVO getFileDetail(MemberVO memberVO)throws Exception;
 	
-	public int join(MemberVO memberVO) throws Exception;
 	
-	public MemberVO login(MemberVO memberVO) throws Exception;
+	//파일 추가
+	public int setFileAdd(MemberFilesVO memberFilesVO)throws Exception;
 	
-	public int infoUpdate(MemberVO memberVO) throws Exception;
+	//회원 탈퇴
+	public int setDelete(MemberVO memberVO)throws Exception;
 	
-	public MemberVO mypage(MemberVO memberVO) throws Exception;
+	//회원 수정
+	public int setUpdate(MemberVO memberVO)throws Exception;
 	
-	public int infoDelete(MemberVO memberVO) throws Exception;
+	//myPage
+	public MemberVO getDetail(MemberVO memberVO)throws Exception;
 	
+	//로그인
+	public MemberVO getLogin(MemberVO memberVO)throws Exception;
+	
+	//회원가입
+	public int setAdd(MemberVO memberVO)throws Exception;
+
 }

@@ -14,7 +14,7 @@ public class FileManager {
 	@Autowired
 	private ServletContext servletContext;
 	
-	public boolean remove(String path, String fileName)throws Exception{
+	public boolean remove(String fileName, String path)throws Exception{
 		//파일을 HDD에서 삭제
 		//저장된 폴더명, 저장된 파일명
 		path = servletContext.getRealPath(path);
