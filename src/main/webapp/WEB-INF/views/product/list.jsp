@@ -81,9 +81,7 @@
 	        	</div>
 	      </form>
 		</div>
-		<div class="col-1">
-			<a href="./add" type="button" class="btn btn-outline-primary">WRITE</a>
-		</div>
+
 	</div>
 
 </div>

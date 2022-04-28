@@ -10,6 +10,7 @@
 			<th>Name</th>
 			<th>Price</th>
 			<th>Count</th>
+			<th>판매여부</th>
 		</tr>	
 	</thead>
 	<tbody>
@@ -19,6 +20,7 @@
 				<td>${vo.productName}</td>
 				<td>${vo.productPrice}</td>
 				<td>${vo.productCount}</td>
+				<td>${vo.sale eq 1?'판매중':'판매중지'}</td>
 			</tr>
 		</c:forEach>
 	</tbody>

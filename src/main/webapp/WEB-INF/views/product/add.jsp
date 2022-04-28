@@ -58,6 +58,21 @@
 		    </div>
 		  </div>
 		  
+		  <div class="row mb-3">
+			<div class="form-check">
+			  <input class="form-check-input sale" type="radio" value="1" name="sale">
+			  <label class="form-check-label" for="flexRadioDefault1">
+			    판매
+			  </label>
+			</div>
+			<div class="form-check">
+			  <input class="form-check-input sale" type="radio" value="0" name="sale" checked>
+			  <label class="form-check-label" for="flexRadioDefault2">
+			    판매중지
+			  </label>
+			</div>
+		  </div>	
+		  
 		
 		<button id="fileAdd" type="button" class="btn btn-danger d-block my-4">FileADD</button>  
 		  
@@ -76,119 +91,124 @@
 
 
 <script type="text/javascript">
-	let pn=1;
-	$("#list").on("click", ".pager", function() {
-		let checkPn = $(this).attr("data-pn");
-		if(checkPn>0) {
-			pn=checkPn;
-			getList();		
-		}else {
-			//이전 또는 다음 Block이 없을 경우
-			alert("마지막 페이지입니다.");
-		}
-	})
+//
+//let pn=1;
+$("#list").on("click", ".pager", function() {
+	let checkPn=$(this).attr("data-pn");
+	if(checkPn > 0){
+		//pn=checkPn;
+		getList(checkPn);
+	}else {
+		//이전 또는 다음 Block이 X
+		alert("마지막 페이지 입니다");
+	}
+})
+//list ajax url:ajaxList, Get
+getList(1);
 
-	//list ajax url : ajaxList, Get, 
-	getList();
+function getList(pn){
+	console.log("start");
+	$.ajax({
+		type:"GET",
+		url:"./ajaxList",
+		data:{
+			pn:pn,
+			perPage:5
+		},
+		success:function(data){
+			$("#list").html(data.trim());
+		}
+	});
+}
+
+//add
+$("#addBtn").click(function() {
+	let formData = new FormData();
+	let productName = $("#productName").val();
+	let productPrice = $("#productPrice").val();
+	let productCount = $("#productCount").val();
+	let productDetail = $("#productDetail").summernote("code"); //$("#productDetail").val();
+	let sale=null;
+	$(".sale").each(function(idx, item) {
+		if($(item).prop("checked")) {
+			sale=$(item).val();
+		}
+	});
+	$(".files").each(function(idx, item) {
+		if(item.files.length>0){
+			console.log(idx); 				//index번호
+			console.log(item);              //<input type="file">
+			console.log(item.files);        //input 태그의 file List
+			console.log(item.files[0]);     //files list중 첫번째 파일
+			console.log("lenth : ", item.files.length);
+			console.log(item.files[0].name) //files list중 첫번째 파일의 이름
+			//formData.append("파라미터명", 값);
+			formData.append("files", item.files[0]);
+		}
+	});//each 끝
 	
-	function getList() {
+	formData.append("productName", productName);
+	formData.append("productPrice", productPrice);
+	formData.append("productCount", productCount);
+	formData.append("productDetail", productDetail);
+	formData.append("sale", sale);
+	
+	
 		$.ajax({
-			type:"GET",
-			url:"./ajaxList",
-			data:{
-				pn:pn,
-				perPage:5
-			},
-			success:function(data) {
-				//$("#list").children().children().after(data.trim());
-				$("#list").html(data.trim());
-			},
-			error:function() {
-				alert("에러 발생");
+		type:"POST",
+		url:"./add",
+	    processData: false,
+	    contentType: false,
+		data:formData /* {
+			productName: productName,
+			productPrice:productPrice,
+			productCount:productCount,
+			productDetail:productDetail
+		} */,
+		success:function(data){
+			if(data.trim()=='1'){
+				alert("상품 등록 완료");
+				getList();
+				$("#productName").val("");
+				$("#productPrice").val("");
+				$("#productCount").val("");
+				$("#productDetail").summernote("code", ""); //$("#productDetail").val("");
+				
+			}else {
+				alert("상품 등록 실패");
 			}
 			
-		});
-	}
-	
-	 $("#addBtn").click(function() {
-		 let formData = new FormData();
-		 let productName = $("#productName").val();
-		 let productPrice = $("#productPrice").val();
-		 let productCount = $("#productCount").val();
-		 let productDetail =$("#productDetail").summernote('code'); // $("#productDetail").val();
-		 $(".files").each(function(idx,item) {
-			 if(item.files.length>0) {	 
-				 console.log(idx); // index번호
-				 console.log(item); //<input type="file">
-				 console.log(item.files); //input 태그의 fileList
-				 console.log(item.files[0]); //fileList 중 첫 번째 파일
-				 console.log("length : "+item.files.length); 
-				 console.log(item.files[0].name); //fileList 중 첫 번째 파일의 이름
-				 //formData.append("파라미터명", 값);
-				 formData.append("files", item.files[0]);
-			 }
-		 }); //each 끝
-		 
-		 formData.append("productName", productName);
-		 formData.append("productPrice", productPrice);
-		 formData.append("productCount", productCount);
-		 formData.append("productDetail", productDetail);
-		 
-		 
-	 	$.ajax({
-			type:"POST",
-			url:"./add",
-			processData:false,
-			contentType:false,
-			data:formData,/* { 
-				productName:productName,
-				productPrice:productPrice,
-				productCount:productCount,
-				productDetail:productDetail		
-			}, */
-			success:function(data) {
-				if(data.trim() == '1') {
-					alert("상품 등록 완료");
-					getList();
-					$("#productName").val("");
-					$("#productPrice").val("");
-					$("#productCount").val("");
-					$("#productDetail").summernote('code',"");
-				} else {
-					alert("상품 등록 실패");
-				}
-			}, 
-			error:function() {
-				alert("에러 발생");
-			}
-		}); 
-	}); 
-	 
-	//summernote
-	 $('#productDetail').summernote({
-		 height : 400
-	 });
-
-	let count=0;
-	$("#fileAdd").click(function() {
-		if(count>4){
-			alert('최대 5개만 가능');
-			return;
+		},
+		error:function(){
+			alert("error 발생");
 		}
-		let result = '<div class="input-group">';
-		result = result + '<input name="files" type="file" class="form-control files" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">'
-		result = result + '<button class="btn btn-outline-secondary del" type="button" id="inputGroupFileAddon04">X</button>'
-		result = result + '</div>';
-		$("#fileResult").append(result);
-		count++;
-	});
+	}); 
 	
-	$("#fileResult").on("click", ".del", function() {
-		$(this).parent().remove();
-		count--;
-	} );
-	
-	
+});
+//summernote
+ $('#productDetail').summernote({
+	 height: 400
+ });
+let count=0;
+$("#fileAdd").click(function() {
+	if(count>4){
+		alert('최대 5개만 가능');
+		return;
+	}
+	let result = '<div class="input-group">';
+	result = result + '<input name="files" type="file" class="form-control files" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">'
+	result = result + '<button class="btn btn-outline-secondary del" type="button" id="inputGroupFileAddon04">X</button>'
+	result = result + '</div>';
+	$("#fileResult").append(result);
+	count++;
+});
+
+$("#fileResult").on("click", ".del", function() {
+	$(this).parent().remove();
+	count--;
+} );
+
+
 
 	
 	

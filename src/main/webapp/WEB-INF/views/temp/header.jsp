@@ -19,6 +19,20 @@
 	        <li class="nav-item">
 	          <a class="nav-link active" href="/product/list">product</a>
 	        </li>
+	        <c:forEach items="${member.roleVOs}" var="vo">
+	        	<c:if test="${vo.roleName eq 'ROLE_ADMIN'}">
+			        <li class="nav-item">
+			          <a class="nav-link active" href="/admin/manage">관리자모드</a>
+			        </li>	        	
+	        	</c:if>
+	        </c:forEach>
+	        <c:forEach items="${member.roleVOs}" var="vo">
+	        	<c:if test="${vo.roleName eq 'ROLE_SELLER'}">
+			        <li class="nav-item">
+			          <a class="nav-link active" href="/product/manage">Product 관리</a>
+			        </li>	        	
+	        	</c:if>
+	        </c:forEach>
 	        <li class="nav-item dropdown">
 	          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 	            Dropdown
@@ -51,7 +65,7 @@
 	      		</c:when>
 	      		<c:otherwise>
 			        <li class="nav-item">
-			          <a class="nav-link active" aria-current="page" href="/member/join">
+			          <a class="nav-link active" aria-current="page" href="/member/add">
 			          Join <i class="bi bi-person-plus-fill"></i>
 			          </a>
 			        </li>
