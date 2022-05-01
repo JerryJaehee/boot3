@@ -29,20 +29,59 @@ public class ProductController {
 		return "product";
 	}
 	
+	@PostMapping("fileDelete")
+	public ModelAndView setFileDelete(ProductFilesVO productFilesVO) throws Exception {
+		ModelAndView mv = new ModelAndView();
+
+		int result = productService.setFileDelete(productFilesVO);
+		
+		mv.setViewName("common/result");
+		mv.addObject("result",result);
+		return mv;
+	}
+	
+	@PostMapping("update")
+	public ModelAndView setUpdate(ProductVO productVO, MultipartFile [] files) throws Exception {
+		ModelAndView mv = new ModelAndView();
+
+		int result = productService.setUpdate(productVO, files);
+		if(result>0) {
+			mv.setViewName("redirect:./manage");
+		}else {
+			mv.setViewName("common/getResult.jsp");
+			mv.addObject("msg", "수정 실패했습니다.");
+			mv.addObject("path","./manageDetail?productNum="+productVO.getProductNum());
+		}
+		return mv;
+	}
+	
+	@GetMapping("update")
+	public ModelAndView setUpdate(ProductVO productVO) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		productVO = productService.getDetail(productVO);
+		mv.addObject("vo", productVO);
+		mv.setViewName("product/update");
+		return mv;
+	}
+	
 	@GetMapping("detail")
 	public ModelAndView getDetail(ProductVO productVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		//parameter는 productNum
 		//모든 구매자가 보는 페이지
+		productVO = productService.getDetail(productVO);
+		mv.addObject("vo",productVO);
 		mv.setViewName("product/detail");
 		return mv;
 	}
 	
-	@GetMapping("ManageDetail")
+	@GetMapping("manageDetail")
 	public ModelAndView getManageDetail(ProductVO productVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		//parameter는 productNum
 		//판매자가 보는 페이지
+		productVO = productService.getDetail(productVO);
+		mv.addObject("vo",productVO);
 		mv.setViewName("product/manageDetail");
 		return mv;
 	}
@@ -64,10 +103,7 @@ public class ProductController {
 		
 		MemberVO memberVO = (MemberVO)session.getAttribute("member");
 		productVO.setId(memberVO.getId());
-		for(MultipartFile f:files) {
-			System.out.println(f.getOriginalFilename());
-			System.out.println(f.getSize());
-		}
+
 		int result = productService.setAdd(productVO, files);
 		//mv.setViewName("redirect:./list"); 동기방식
 		mv.setViewName("common/result"); //Ajax

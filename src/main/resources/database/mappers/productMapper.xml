@@ -4,6 +4,33 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.iu.boot3.product.ProductMapper">
+	<delete id="setFileDelete" parameterType="ProductFilesVO">
+		DELETE FROM PRODUCTFILES WHERE FILENUM=#{fileNum}
+	</delete>
+	
+	<select id="getFileDetail" parameterType="ProductFilesVO" resultType="ProductFilesVO">
+		SELECT * FROM PRODUCTFILES WHERE FILENUM=#{fileNum}
+	</select>
+
+	<update id="setUpdate" parameterType="ProductVO">
+		UPDATE PRODUCT SET
+		PRODUCTNAME=#{productName},
+		PRODUCTPRICE=#{productPrice},
+		PRODUCTCOUNT=#{productCount},
+		PRODUCTDETAIL=#{productDetail}, 
+		SALE=#{sale}
+		WHERE PRODUCTNUM=#{productNum}
+	</update>
+
+	<select id="getDetail" parameterType="ProductVO" resultMap="listResult">
+		SELECT P.*, PF.*
+		FROM PRODUCT P 
+		LEFT JOIN
+		PRODUCTFILES PF
+		USING(PRODUCTNUM)
+		WHERE PRODUCTNUM=#{productNum}
+	</select>
+	
 	<select id="getList" parameterType="Pager" resultMap="listResult">
 		SELECT P.*, F.*
 		FROM 
@@ -85,7 +112,4 @@
 		VALUES (NULL, #{productNum}, #{fileName}, #{oriName})
 	</insert>
 	
-	<select id="getDetail" resultMap="listResult"></select>
-	
-	<select id="getManageDetail" resultMap="listResult"></select>
 </mapper>

@@ -8,9 +8,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<c:import url="../temp/header_css.jsp"></c:import>
 <title>Insert title here</title>
+<style type="text/css">
+	.detail {
+		cursor:pointer;
+	}
+</style>
 </head>
 <body>
 	<c:import url="../temp/header.jsp"></c:import>
@@ -26,16 +30,20 @@
 	
 	<div class="row mt-4">
 		<c:forEach items="${list}" var="vo">
-			<div class="card" style="width: 18rem;">
+	
+			<div class="card col-3 detail" data-num="${vo.productNum}">
 			  <img src="../resources/upload/product/${vo.productFilesVOs[0].fileName}" class="card-img-top" alt="...">
 			  <div class="card-body">
 			    <p class="card-text">${vo.productName}</p>
 			  </div>
 			    <div class="card-footer">
-			    	<h5>${vo.productPrice}</h5>
-			  </div>
+				    <h5>${vo.productPrice}</h5>
+				</div>
 			</div>
+		
 		</c:forEach>
+		
+		
 	</div>
 	
 	<div class="row my-4">
@@ -63,14 +71,13 @@
 	
 	
 	
-	<div class="row justify-content-between">
+	<div class="row my-4 justify-content-between">
 		<div class="col-5">
 			<form class="d-flex" action="./list" method="get">
 				<div class="col-4 me-2">
 				<select name="kind" class="form-select " aria-label="Default select example">
-				  <option value="col1">Title</option>
+				  <option value="col1">Name</option>
 				  <option value="col2">Contents</option>
-				  <option value="col3">Writer</option>
 				</select>
 				</div>
 				<div class="col-6 me-2">
@@ -81,12 +88,21 @@
 	        	</div>
 	      </form>
 		</div>
-
+		<div class="col-1">
+			<a href="./add" type="button" class="btn btn-outline-primary">WRITE</a>
+		</div>
 	</div>
 
 </div>
 
 
 <c:import url="../temp/header-script.jsp"></c:import>
+<script type="text/javascript">
+	$(".detail").click(function() {
+		console.log("click");
+		let num = $(this).attr("data-num");
+		location.href="./detail?productNum="+num;
+	});
+</script>
 </body>
 </html>

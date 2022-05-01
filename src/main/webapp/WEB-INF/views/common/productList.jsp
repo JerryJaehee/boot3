@@ -17,7 +17,7 @@
 		<c:forEach items="${list}" var="vo">
 			<tr>
 				<td>${vo.productNum}</td>
-				<td>${vo.productName}</td>
+				<td class="detail" data-num="${vo.productNum}">${vo.productName}</td>
 				<td>${vo.productPrice}</td>
 				<td>${vo.productCount}</td>
 				<td>${vo.sale eq 1?'판매중':'판매중지'}</td>
