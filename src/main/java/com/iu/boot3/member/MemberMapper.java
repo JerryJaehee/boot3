@@ -3,13 +3,14 @@ package com.iu.boot3.member;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.multipart.MultipartFile;
 
 @Mapper
 public interface MemberMapper {
+	
+	public MemberVO getFindId(MemberVO memberVO) throws Exception;
+
 	//파일 detail
 	public MemberFilesVO getFileDetail(MemberVO memberVO)throws Exception;
-	
 	
 	//파일 추가
 	public int setFileAdd(MemberFilesVO memberFilesVO)throws Exception;
@@ -31,5 +32,6 @@ public interface MemberMapper {
 	
 	//회원가입
 	public int setAdd(MemberVO memberVO)throws Exception;
+	
 
 }

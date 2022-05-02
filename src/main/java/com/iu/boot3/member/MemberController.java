@@ -19,13 +19,30 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/member/*")
 public class MemberController {
 	
-
 	@Autowired
 	private MemberService memberService;
 
 	@ModelAttribute("board")
 	public String getBoard() {
 		return "member";
+	}
+	
+	@GetMapping("findId")
+	public ModelAndView getFindId(@ModelAttribute MemberVO memberVO) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		//mv.addObject("vo", new MemberVO()); //데이터없는 빈 객체
+		mv.setViewName("member/findId");
+		return mv;
+	}
+	
+	@PostMapping("findId")
+	public ModelAndView getFindID(MemberVO memberVO) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		memberVO = memberService.getFindId(memberVO);
+		mv.addObject("idResult", memberVO);
+		mv.setViewName("member/findIdResult");
+		return mv;
+		
 	}
 	
 	@PostMapping("update")
