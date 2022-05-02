@@ -61,29 +61,11 @@
 <script type="text/javascript" src="../resources/js/fileAdd.js"></script>
 <script type="text/javascript" src="../js/summernote.js"></script>
  <script type="text/javascript">
- summernoteInit("summernote","");
  
- 	let count = 0;
+	summernoteInit("summernote","");
+	fileAddInit(0);
+	fileDeleteInit();
  
- 	$("#fileAdd").click(function() {
- 		if(count>4) {
- 			alert('최대 5개만 가능합니다.');
- 			return ;
- 		}
- 		let result = '<div class="input-group">';
- 		result = result + ' <input type="file" name="files" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">';
- 		result = result + '  <button class="btn btn-outline-secondary del" type="button" id="inputGroupFileAddon04">X</button>'
- 		result = result + '</div>';
- 		
- 		$("#fileResult").append(result);
- 		count++;
- 	});
- 	
- 	$("#fileResult").on("click", ".del", function() {
- 		$(this).parent().remove();
- 		count--;
- 	})
- 	
  </script>
  
 </body>
