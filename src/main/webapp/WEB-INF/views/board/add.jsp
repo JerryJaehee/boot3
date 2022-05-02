@@ -31,7 +31,7 @@
 			  <div class="mb-3 row">
 			    <label for="staticText" class="col-sm-2 col-form-label">Writer</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" id="writer" name="writer">
+			      <input type="text" class="form-control" id="writer" name="writer" value="${member.id}" readonly="readonly">
 			    </div>
 			  </div>
 			  
@@ -58,71 +58,14 @@
 		
 		</div>
 	</div>
-
+<script type="text/javascript" src="../resources/js/fileAdd.js"></script>
+<script type="text/javascript" src="../js/summernote.js"></script>
  <script type="text/javascript">
- 	$("#summernote").summernote({
- 		height : 400,
- 		placeholder: '내용을 입력하세요',
- 		callbacks: {
- 			onImageUpload:function(files) {
-				//files 업로드한 이미지 파일 객체
-				let formData = new FormData();
-				formData.append("file", files[0]);
-				
-				// /board/summerFileUpload
-				$.ajax({
-					type:"POST",
-					url:"./summerFileUpload",
-					processData:false,
-					contentType:false,
-					data:formData,
-					success:function(data) {
-						$("#summernote").summernote('editor.insertImage', data.trim());					
-					},
-					error:function() {
-						alert("에러 발생");
-					}
-				});
-				
- 			}, //onImageUpload 끝
- 			onMediaDelete:function(files) {
- 				let fileName = $(files[0]).attr("src");
- 				console.log("fileName : "+fileName);
- 				$.ajax({
- 					type:"GET",
- 					url:"./summerFileDelete",
- 					data: {
- 						fileName:fileName
- 					},
- 					success:function(data) {
- 						console.log(data.trim());
- 					}
- 				});
- 			}// onMediaDelete 끄읕
- 		}
- 	});
  
- 	let count = 0;
+	summernoteInit("summernote","");
+	fileAddInit(0);
+	fileDeleteInit();
  
- 	$("#fileAdd").click(function() {
- 		if(count>4) {
- 			alert('최대 5개만 가능합니다.');
- 			return ;
- 		}
- 		let result = '<div class="input-group">';
- 		result = result + ' <input type="file" name="files" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">';
- 		result = result + '  <button class="btn btn-outline-secondary del" type="button" id="inputGroupFileAddon04">X</button>'
- 		result = result + '</div>';
- 		
- 		$("#fileResult").append(result);
- 		count++;
- 	});
- 	
- 	$("#fileResult").on("click", ".del", function() {
- 		$(this).parent().remove();
- 		count--;
- 	})
- 	
  </script>
  
 </body>

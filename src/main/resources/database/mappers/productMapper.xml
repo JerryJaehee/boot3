@@ -4,6 +4,33 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.iu.boot3.product.ProductMapper">
+	<delete id="setFileDelete" parameterType="ProductFilesVO">
+		DELETE FROM PRODUCTFILES WHERE FILENUM=#{fileNum}
+	</delete>
+	
+	<select id="getFileDetail" parameterType="ProductFilesVO" resultType="ProductFilesVO">
+		SELECT * FROM PRODUCTFILES WHERE FILENUM=#{fileNum}
+	</select>
+
+	<update id="setUpdate" parameterType="ProductVO">
+		UPDATE PRODUCT SET
+		PRODUCTNAME=#{productName},
+		PRODUCTPRICE=#{productPrice},
+		PRODUCTCOUNT=#{productCount},
+		PRODUCTDETAIL=#{productDetail}, 
+		SALE=#{sale}
+		WHERE PRODUCTNUM=#{productNum}
+	</update>
+
+	<select id="getDetail" parameterType="ProductVO" resultMap="listResult">
+		SELECT P.*, PF.*
+		FROM PRODUCT P 
+		LEFT JOIN
+		PRODUCTFILES PF
+		USING(PRODUCTNUM)
+		WHERE PRODUCTNUM=#{productNum}
+	</select>
+	
 	<select id="getList" parameterType="Pager" resultMap="listResult">
 		SELECT P.*, F.*
 		FROM 
@@ -11,8 +38,18 @@
 			SELECT 
 			* 
 		 	FROM PRODUCT 
-		 	WHERE PRODUCTNUM>0 and 
-		 		 
+		 	WHERE PRODUCTNUM>0 
+		 	<choose>
+		 		<when test="id != null">
+			 		and ID=#{id}	 		
+		 		</when>
+		 		<otherwise>
+		 			and SALE=1
+		 		</otherwise>
+		 	</choose>
+		 	
+		 	
+		 	and 	 
 			<choose>
 				<when test="kind == 'col1'">
 					PRODUCTNAME
@@ -36,6 +73,8 @@
 		<result column="productPrice" property="productPrice"/>
 		<result column="productCount" property="productCount"/>
 		<result column="productDetail" property="productDetail"/>
+		<result column="id" property="id" />
+		<result column="sale" property="sale" />
 		<collection property="productFilesVOs" javaType="java.util.List" ofType="ProductFilesVO">
 			<id column="fileNum" property="fileNum"/>
 			<result column="fileName" property="fileName"/>
@@ -47,8 +86,11 @@
  					SELECT 
 			COUNT(PRODUCTNUM) 
 		 	FROM PRODUCT 
-		 	WHERE PRODUCTNUM>0 and 
-		 		 
+		 	WHERE PRODUCTNUM>0
+		 	<if test="id != null">
+		 		and ID=#{id}
+		 	</if>	 
+		 	 and 
 			<choose>
 				<when test="kind == 'col1'">
 					PRODUCTNAME
@@ -61,12 +103,13 @@
  	</select>
 	
 	<insert id="setAdd" parameterType="ProductVO" useGeneratedKeys="true" keyProperty="productNum">
-		INSERT INTO PRODUCT (PRODUCTNUM, PRODUCTNAME, PRODUCTPRICE, PRODUCTCOUNT, PRODUCTDETAIL)
-		VALUES (#{productNum}, #{productName}, #{productPrice}, #{productCount}, #{productDetail})
+		INSERT INTO PRODUCT (PRODUCTNUM, PRODUCTNAME, PRODUCTPRICE, PRODUCTCOUNT, PRODUCTDETAIL, ID, SALE)
+		VALUES (#{productNum}, #{productName}, #{productPrice}, #{productCount}, #{productDetail}, #{id}, #{sale})
 	</insert>
 	
 	<insert id="setFileAdd" parameterType="ProductFilesVO">
 		INSERT INTO PRODUCTFILES
 		VALUES (NULL, #{productNum}, #{fileName}, #{oriName})
 	</insert>
+	
 </mapper>
