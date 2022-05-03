@@ -1,14 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
 <!-- Required meta tags -->
  <meta charset="utf-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
-
  <c:import url="../temp/header_css.jsp"></c:import>
+ <c:import url="../temp/header-script.jsp"></c:import>
 <title>Insert title here</title>
 </head>
 <body>
@@ -23,48 +24,67 @@
 
 
 		<div class="row mt-4">
-			<form action="./add" method="post" enctype="multipart/form-data">
+			<form:form method="post" enctype="multipart/form-data" modelAttribute="memberVO">
 				<div class="row mb-3">
 					<label for="id" class="col-sm-2 col-form-label">ID</label>
 					<div class="col-sm-10">
-						<input type="text" name="id" class="form-control" id="id">
+						<form:input path="id" cssClass="form-control" id="id"/>
+						<div>
+							<form:errors path="id"></form:errors>
+						</div>
 					</div>
 				</div>
 
 				<div class="row mb-3">
 					<label for="pw" class="col-sm-2 col-form-label">Password</label>
 					<div class="col-sm-10">
-						<input type="password" name="pw" class="form-control" id="pw">
+						<form:password path="pw" cssClass="form-control" id="pw"/>
+						<div>
+							<form:errors path="pw" cssStyle="color:red;"></form:errors>
+						</div>
 					</div>
 				</div>
 
 
-				<div class="row mb-3">
+ 				<div class="row mb-3">
 					<label for="checkPw" class="col-sm-2 col-form-label">Password</label>
 					<div class="col-sm-10">
-						<input type="password" name="checkPw" class="form-control"
-							id="checkPw">
+					<!-- 	<input type="password" name="checkPw" class="form-control"
+							id="checkPw"> -->
+						<form:password path="checkPw" cssClass="form-control" id="checkPw"/>
+						<div>
+							<form:errors path="checkPw" cssStyle="color:red;"></form:errors>
+						</div>
 					</div>
 				</div>
 
 				<div class="row mb-3">
 					<label for="name" class="col-sm-2 col-form-label">Name</label>
 					<div class="col-sm-10">
-						<input type="text" name="name" class="form-control" id="name">
+						<form:input path="name" cssClass="form-control" id="name"/>
+						<div>
+							<form:errors path="name"></form:errors>
+						</div>
 					</div>
 				</div>
 
 				<div class="row mb-3">
 					<label for="Email" class="col-sm-2 col-form-label">Email</label>
 					<div class="col-sm-10">
-						<input type="email" name="email" class="form-control" id="email">
+						<form:input path="email" cssClass="form-control" id="email"/>
+						<div>
+							<form:errors path="email" cssStyle="color:red;"></form:errors>
+						</div>
 					</div>
 				</div>
 
 				<div class="row mb-3">
 					<label for="phone" class="col-sm-2 col-form-label">Phone</label>
 					<div class="col-sm-10">
-						<input type="text" name="phone" class="form-control" id="phone">
+						<form:input path="phone" cssClass="form-control" id="phone"/>
+						<div>
+							<form:errors path="phone" cssStyle="color:red;"></form:errors>
+						</div>
 					</div>
 				</div>
 				<div class="row mb-3">
@@ -75,7 +95,7 @@
 				</div>
 
 				<button type="submit" class="btn btn-primary">Join</button>
-			</form>
+			</form:form>
 
 		</div>
 
@@ -103,7 +123,7 @@
 	</div>
 
 
-	<c:import url="../temp/header-script.jsp"></c:import>
+
 	<script type="text/javascript">
 		$("#all").click(function(){
 			$(".ch").prop("checked", $("#all").prop("checked"));

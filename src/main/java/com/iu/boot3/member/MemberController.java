@@ -3,10 +3,13 @@ package com.iu.boot3.member;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,9 +31,8 @@ public class MemberController {
 	}
 	
 	@GetMapping("findId")
-	public ModelAndView getFindId(@ModelAttribute MemberVO memberVO) throws Exception {
+	public ModelAndView getFindId() throws Exception {
 		ModelAndView mv = new ModelAndView();
-		//mv.addObject("vo", new MemberVO()); //데이터없는 빈 객체
 		mv.setViewName("member/findId");
 		return mv;
 	}
@@ -89,6 +91,11 @@ public class MemberController {
 	@PostMapping("login")
 	public ModelAndView getLogin(MemberVO memberVO, HttpSession session)throws Exception{
 		ModelAndView mv = new ModelAndView();
+		System.out.println("Login page");
+//		if(bindingResult.hasErrors()) {
+//			mv.setViewName("member/login");
+//			return mv;
+//		}
 		memberVO = memberService.getLogin(memberVO);
 		mv.setViewName("member/login");
 		
@@ -101,8 +108,9 @@ public class MemberController {
 	}
 	
 	@GetMapping("login")
-	public ModelAndView getLogin()throws Exception{
+	public ModelAndView getLogin(@ModelAttribute MemberVO memberVO)throws Exception{
 		ModelAndView mv = new ModelAndView();
+		//mv.addObject("vo", new MemberVO()); //데이터없는 빈 객체
 		mv.setViewName("member/login");
 		return mv;
 	}
@@ -120,8 +128,18 @@ public class MemberController {
 	}
 	
 	@PostMapping("add")
-	public ModelAndView setAdd(MemberVO memberVO, MultipartFile files)throws Exception{
+	public ModelAndView setAdd(@Valid MemberVO memberVO, BindingResult bindingResult, MultipartFile files)throws Exception{
 		ModelAndView mv = new ModelAndView();
+//		if(bindingResult.hasErrors()) {
+//			mv.setViewName("member/add");
+//			return mv;
+//		}
+		//사용자 정의 검증 메서드 호출
+		if(memberService.memberError(memberVO, bindingResult)) {
+			mv.setViewName("member/add");
+			return mv;
+		}
+		
 		int result = memberService.setAdd(memberVO, files);
 		
 		
@@ -132,7 +150,7 @@ public class MemberController {
 	
 	
 	@GetMapping("add")
-	public ModelAndView setAdd()throws Exception{
+	public ModelAndView setAdd(@ModelAttribute MemberVO memberVO)throws Exception{
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("member/add");
 		return mv;
