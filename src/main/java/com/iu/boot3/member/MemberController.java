@@ -71,6 +71,7 @@ public class MemberController {
 	
 	@GetMapping("mypage")
 	public ModelAndView getMypage(HttpSession session)throws Exception{
+		System.out.println("mypage!!!");
 		ModelAndView mv = new ModelAndView();
 		MemberVO memberVO =(MemberVO)session.getAttribute("member");
 		memberVO = memberService.getDetail(memberVO);

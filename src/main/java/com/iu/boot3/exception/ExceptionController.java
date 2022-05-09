@@ -31,10 +31,11 @@ public class ExceptionController {
 		}
 		
 		@ExceptionHandler(Exception.class)
-		public ModelAndView ex3() {
+		public ModelAndView ex3(Exception e) {
 			ModelAndView mv = new ModelAndView();
 			System.out.println("Exception 예외 발생 처리");
 			mv.setViewName("error/error");
+			e.printStackTrace();
 			return mv;
 		}
 		

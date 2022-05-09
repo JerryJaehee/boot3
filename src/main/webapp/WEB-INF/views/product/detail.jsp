@@ -10,6 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <c:import url="../temp/header_css.jsp"></c:import>
+<c:import url="../temp/header-script.jsp"></c:import>
 <title>Insert title here</title>
 </head>
 <body>
@@ -21,7 +22,14 @@
 		<h1><spring:message code="product.detail.info" arguments="${vo.productPrice}, ${vo.productCount}" argumentSeparator=","></spring:message></h1>
 	</div>
 	
+	<div class="container">
+		<div class="row">
+			<button type="button" id="cart" data-pn="${vo.productNum}" class="btn btn-danger">장바구니</button>
+		</div>
+	</div>
 	
-	<c:import url="../temp/header-script.jsp"></c:import>
+	<script type="text/javascript" src="../resources/js/cart.js"></script>
+	
+
 </body>
 </html>

@@ -4,6 +4,8 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.iu.boot3.product.ProductMapper">
+
+
 	<delete id="setFileDelete" parameterType="ProductFilesVO">
 		DELETE FROM PRODUCTFILES WHERE FILENUM=#{fileNum}
 	</delete>
